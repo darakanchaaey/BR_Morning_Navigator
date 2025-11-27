@@ -1,7 +1,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <title>BR Morning Navigator v2</title>
+  <title>BR Morning Navigator v3</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- ฟอนต์ -->
@@ -30,17 +30,18 @@
     .app {
       max-width: 1000px;
       margin: 0 auto;
-      padding: 16px 16px 24px;
+      padding: 12px 16px 24px;
     }
 
     header {
       background: #ffffffee;
       backdrop-filter: blur(12px);
       border-radius: 24px;
-      padding: 16px 18px;
+      padding: 12px 18px;
       margin-bottom: 12px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
+      justify-content: space-between;
       gap: 16px;
       box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
       position: sticky;
@@ -48,9 +49,14 @@
       z-index: 10;
     }
 
+    .header-left {
+      display: flex;
+      gap: 14px;
+    }
+
     .logo-circle {
-      width: 60px;
-      height: 60px;
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
       background: radial-gradient(circle at 30% 20%, #ffe082, #ffb74d);
       display: flex;
@@ -58,14 +64,14 @@
       justify-content: center;
       font-weight: 700;
       color: #4e342e;
-      font-size: 20px;
+      font-size: 19px;
       box-shadow: 0 5px 14px rgba(255, 183, 77, 0.7);
       flex-shrink: 0;
     }
 
     header h1 {
       margin: 0;
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 600;
     }
 
@@ -75,10 +81,58 @@
       color: #555;
     }
 
-    @media (max-width: 640px) {
+    .header-right {
+      text-align: right;
+      font-size: 12px;
+    }
+
+    .login-box {
+      background: #f3f5ff;
+      border-radius: 999px;
+      padding: 4px 8px 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .login-box input {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 12px;
+      padding: 4px 6px;
+      min-width: 120px;
+    }
+
+    .login-label {
+      font-weight: 500;
+      color: #3949ab;
+    }
+
+    .login-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 11px;
+      cursor: pointer;
+      background: #3949ab;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .current-user {
+      margin-top: 4px;
+      font-size: 11px;
+      color: #777;
+    }
+
+    @media (max-width: 720px) {
       header {
-        flex-direction: row;
+        flex-direction: column;
         align-items: flex-start;
+      }
+      .header-right {
+        text-align: left;
       }
     }
 
@@ -250,15 +304,15 @@
       margin-top: 8px;
     }
 
+    .subnote {
+      font-size: 11px;
+      color: #777;
+    }
+
     .result-time {
       font-size: 24px;
       font-weight: 600;
       margin: 4px 0;
-    }
-
-    .subnote {
-      font-size: 11px;
-      color: #777;
     }
 
     .chip {
@@ -447,6 +501,22 @@
       font-size: 13px;
     }
 
+    /* Map */
+    #map {
+      width: 100%;
+      height: 260px;
+      border-radius: 16px;
+      margin-top: 8px;
+      border: 1px solid #e0e0e0;
+      overflow: hidden;
+    }
+
+    .map-note {
+      font-size: 11px;
+      color: #777;
+      margin-top: 4px;
+    }
+
     footer {
       text-align: center;
       font-size: 11px;
@@ -458,26 +528,38 @@
 <body>
   <div class="app">
     <header>
-      <div class="logo-circle">BR</div>
-      <div>
-        <h1>BR Morning Navigator</h1>
-        <p>
-          นวัตกรรมเว็บแอพช่วยวางแผนเวลาไปโรงเรียน &amp; เกมสร้างนิสัยไม่มาสาย
-          สำหรับนักเรียนเบญจมราชาลัย
-        </p>
-        <div class="tab-bar" id="tabBar">
-          <button class="tab-btn active" data-view="todayView">
-            <span class="icon">🌤</span> วันนี้
-          </button>
-          <button class="tab-btn" data-view="statsView">
-            <span class="icon">📊</span> สถิติ &amp; พฤติกรรม
-          </button>
-          <button class="tab-btn" data-view="badgesView">
-            <span class="icon">🏅</span> แบดจ์ &amp; ภารกิจ
-          </button>
-          <button class="tab-btn" data-view="infoView">
-            <span class="icon">💡</span> เกี่ยวกับนวัตกรรม
-          </button>
+      <div class="header-left">
+        <div class="logo-circle">BR</div>
+        <div>
+          <h1>BR Morning Navigator</h1>
+          <p>
+            นวัตกรรมเว็บแอพช่วยวางแผนเวลาไปโรงเรียน &amp; เกมสร้างนิสัยไม่มาสาย
+            สำหรับนักเรียนเบญจมราชาลัย
+          </p>
+          <div class="tab-bar" id="tabBar">
+            <button class="tab-btn active" data-view="todayView">
+              <span class="icon">🌤</span> วันนี้
+            </button>
+            <button class="tab-btn" data-view="statsView">
+              <span class="icon">📊</span> สถิติ &amp; พฤติกรรม
+            </button>
+            <button class="tab-btn" data-view="badgesView">
+              <span class="icon">🏅</span> แบดจ์ &amp; ภารกิจ
+            </button>
+            <button class="tab-btn" data-view="infoView">
+              <span class="icon">💡</span> เกี่ยวกับนวัตกรรม
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="login-box">
+          <span class="login-label">รหัส/ชื่อ นร.</span>
+          <input type="text" id="studentIdInput" placeholder="เช่น 21123 หรือชื่อเล่น" />
+          <button class="login-btn" id="loginBtn">สลับผู้ใช้</button>
+        </div>
+        <div class="current-user">
+          ผู้ใช้ปัจจุบัน: <span id="currentUserLabel">guest</span>
         </div>
       </div>
     </header>
@@ -485,6 +567,21 @@
     <main>
       <!-- View: วันนี้ -->
       <section class="view active" id="todayView">
+        <div class="card">
+          <h2>📍 ตั้งค่าบ้านของฉัน</h2>
+          <p class="lead">
+            ปักหมุดตำแหน่งบ้าน → ระบบจะใช้ระยะทางจริงเพื่อช่วยประเมินเวลาเดินทาง และสามารถต่อยอดเชื่อม Google Maps Directions API ได้
+          </p>
+          <button class="secondary" id="useCurrentLocationBtn">
+            📡 ใช้ตำแหน่งปัจจุบัน (ทดลอง)
+          </button>
+          <div id="map"></div>
+          <div class="map-note">
+            ➤ ลากหมุดสีชมพูไปที่ตำแหน่งบ้านของคุณ แล้วตำแหน่งจะถูกบันทึกอัตโนมัติในเบราว์เซอร์นี้  
+            (สำหรับใช้งานจริง สามารถต่อฐานข้อมูลกลางของโรงเรียนภายหลังได้)
+          </div>
+        </div>
+
         <div class="card">
           <h2>🕒 ตั้งค่าการเดินทางของวันนี้</h2>
           <p class="lead">
@@ -502,14 +599,30 @@
             <div>
               <label for="baseTravel">เวลาเดินทางปกติ (นาที)</label>
               <input type="number" id="baseTravel" min="5" max="180" value="45" />
-              <span class="subnote">เวลาจากบ้านถึงโรงเรียนในวันที่รถไม่ติด</span>
+              <span class="subnote">ถ้าไม่ได้ใส่ ระบบจะลองคำนวนจากระยะทางบ้าน-โรงเรียน</span>
             </div>
           </div>
 
           <h3 style="margin:10px 0 6px;">2) สภาพการเดินทางวันนี้</h3>
-          <div class="form-row-3">
+          <div class="subnote">
+            เลือกได้ 2 แบบ: ให้ระบบดึงจาก API จริง (แนะนำ) หรือกรอกเองแบบทดลอง
+          </div>
+          <div class="form-row">
             <div>
-              <label for="trafficLevel">ระดับรถติด</label>
+              <label>โหมดสภาพการเดินทาง</label>
+              <select id="modeCondition">
+                <option value="auto">ใช้ข้อมูลจริงจาก API (อากาศ + ระยะทาง)</option>
+                <option value="manual">กรอกเอง (โหมดทดลอง)</option>
+              </select>
+            </div>
+            <div id="weatherStatusBox" style="font-size:12px;color:#555;margin-top:18px;">
+              สภาพอากาศ: — / ข้อมูล API: —
+            </div>
+          </div>
+
+          <div class="form-row-3" id="manualConditionRow">
+            <div>
+              <label for="trafficLevel">ระดับรถติด (กรอกเอง)</label>
               <select id="trafficLevel">
                 <option value="0">ปกติ</option>
                 <option value="0.15">ติดเล็กน้อย</option>
@@ -517,7 +630,7 @@
               </select>
             </div>
             <div>
-              <label for="weather">สภาพอากาศ</label>
+              <label for="weather">สภาพอากาศ (กรอกเอง)</label>
               <select id="weather">
                 <option value="0">ปกติ</option>
                 <option value="0.1">ฝนปรอย ๆ</option>
@@ -552,7 +665,7 @@
           <div>
             <label style="font-size:13px;">ควรออกจากบ้านไม่เกินเวลา</label>
             <div class="result-time" id="recommendedLeave">—:—</div>
-            <div class="subnote">คำนวณจากสภาพการจราจร อากาศ และพฤติกรรมของวันนี้</div>
+            <div class="subnote">คำนวณจากระยะทางบ้าน-โรงเรียน + สภาพการเดินทางของวันนี้</div>
             <div style="margin-top:6px;">
               <span class="chip" id="etaChip" style="display:none;"></span>
               <span class="chip" id="riskChip" style="display:none;"></span>
@@ -578,7 +691,7 @@
           </div>
 
           <button class="secondary" id="saveDayBtn">
-            💾 บันทึกข้อมูลวันนี้ (เก็บไว้ดูสถิติ)
+            💾 บันทึกข้อมูลวันนี้ (เก็บไว้ดูสถิติสำหรับผู้ใช้คนนี้)
           </button>
         </div>
       </section>
@@ -589,6 +702,7 @@
           <h2>📊 สถิติ &amp; พฤติกรรมการตื่นเช้า</h2>
           <p class="lead">
             ระบบจะรวบรวมข้อมูลวันที่คุณกดบันทึก เพื่อติดตามการเปลี่ยนแปลงพฤติกรรมการมาสาย / มาเช้า
+            แยกตามผู้ใช้แต่ละคน
           </p>
 
           <div class="stat-grid">
@@ -623,17 +737,17 @@
         <div class="card">
           <h2>🏅 แบดจ์นิสัยไม่มาสาย</h2>
           <p class="lead">
-            เมื่อบันทึกข้อมูลหลายวัน ระบบจะช่วยดูว่าคุณเข้าเงื่อนไขแบดจ์ไหนแล้วบ้าง (เช่น คะแนนดีต่อเนื่อง หรือไม่มาสาย)
+            เมื่อบันทึกข้อมูลหลายวัน ระบบจะช่วยดูว่าคุณเข้าเงื่อนไขแบดจ์ไหนแล้วบ้าง (แยกตามผู้ใช้)
           </p>
           <div class="badge-list" id="badgeList">
             <div class="badge locked" data-badge="early">
-              🌅 Early Bird — มาเช้าอย่างน้อย 3 วัน จากวันที่บันทึก
+              🌅 Early Bird — ไม่มาสายอย่างน้อย 3 วัน จากวันที่บันทึก
             </div>
             <div class="badge locked" data-badge="perfectWeek">
               🚀 Zero Late Week — ไม่มาสายเลย 5 วันติดกัน
             </div>
             <div class="badge locked" data-badge="improve">
-              🌈 Improvement Hero — คะแนนเฉลี่ยสัปดาห์หลัง สูงกว่าสัปดาห์แรก ≥ 15 คะแนน
+              🌈 Improvement Hero — คะแนนเฉลี่ยครึ่งหลังดีกว่าครึ่งแรก ≥ 15 คะแนน
             </div>
           </div>
 
@@ -662,22 +776,40 @@
           </p>
           <ul class="info-list">
             <li><strong>ระดับปัญหา:</strong> นักเรียนจำนวนหนึ่งมาสายซ้ำ ๆ เพราะไม่เห็นผลกระทบจริง และไม่รู้วิธีจัดการเวลา</li>
-            <li><strong>แนวคิดหลัก:</strong> ให้ผู้เรียนเห็นเวลาเดินทางที่ “เหมาะสมสำหรับตัวเอง” ในแต่ละวัน พร้อมเกม/คะแนนที่สะท้อนพฤติกรรม</li>
+            <li><strong>แนวคิดหลัก:</strong> ให้ผู้เรียนเห็นเวลาเดินทางที่ “เหมาะสมสำหรับตัวเอง” ในแต่ละวัน ผ่านข้อมูลจริงจากแผนที่/อากาศ + คะแนน/ภารกิจเกม</li>
             <li><strong>จุดเด่น:</strong> ไม่ใช่ระบบลงโทษ แต่เป็นเครื่องมือช่วยวางแผน + สะท้อนคิด + เสริมแรงเชิงบวก</li>
-            <li><strong>เทคโนโลยี:</strong> HTML/CSS/JavaScript (สามารถต่อยอดเชื่อม API, AppSheet หรือ Firebase ได้)</li>
-            <li><strong>การใช้จริงในโรงเรียน:</strong> ใช้ในรายวิชาทักษะชีวิต, ห้องแนะแนว, HR Room หรือโฮมรูมเช้า</li>
+            <li><strong>เทคโนโลยี:</strong> HTML/CSS/JavaScript + Google Maps JavaScript API + OpenWeather API (สามารถต่อ Firebase หรือฐานข้อมูลโรงเรียนได้ภายหลัง)</li>
+            <li><strong>การใช้จริงในโรงเรียน:</strong> ใช้ในโฮมรูมเช้า รายวิชาทักษะชีวิต ห้องแนะแนว หรือกิจกรรมที่เน้นการสร้างวินัยและการจัดการเวลา</li>
           </ul>
         </div>
       </section>
     </main>
 
     <footer>
-      Prototype UI &amp; Logic โดย HTML / CSS / JavaScript — สามารถต่อยอดเป็นเว็บแอพเต็มรูปแบบหรือเชื่อมฐานข้อมูลได้จริง
+      Prototype UI &amp; Logic โดย HTML / CSS / JavaScript — ส่วนดึงข้อมูลจริงจาก API ต้องใส่ API Key ของโรงเรียนเองเพิ่มเติม
     </footer>
   </div>
 
+  <!-- ✅ Google Maps JavaScript API (ใส่ API Key ของคุณแทน YOUR_GOOGLE_MAPS_API_KEY) -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"
+    async
+    defer
+  ></script>
+
   <script>
-    // ----- Helper -----
+    // ------------------------
+    // ค่าคงที่โรงเรียน (พิกัดโดยประมาณของโรงเรียนเบญจมราชาลัย / หรือจุดกลางกรุงเทพฯ)
+    // ------------------------
+    const SCHOOL_LAT = 13.7525;
+    const SCHOOL_LNG = 100.5010;
+
+    // OpenWeather API (ต้องไปสมัคร key เองฟรี)
+    const OPENWEATHER_API_KEY = "YOUR_OPENWEATHER_API_KEY";
+
+    // ------------------------
+    // Helper functions: เวลา & วันที่
+    // ------------------------
     function timeToMinutes(timeStr) {
       if (!timeStr) return null;
       const [h, m] = timeStr.split(":").map(Number);
@@ -708,10 +840,209 @@
       return `${y}-${m}-${day}`;
     }
 
-    // ----- Set today text -----
-    document.getElementById("todayDate").textContent = formatThaiDate();
+    // ------------------------
+    // Helper: Haversine ระยะทาง (กม.) จากพิกัด
+    // ------------------------
+    function haversineDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371; // km
+      const toRad = (deg) => (deg * Math.PI) / 180;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRad(lat1)) *
+          Math.cos(toRad(lat2)) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
 
-    // ----- Tab switching -----
+    // ------------------------
+    // State: ผู้ใช้ / พิกัดบ้าน
+    // ------------------------
+    let currentUserId = "guest";
+    let lastCalcResult = null;
+    let homeLat = null;
+    let homeLng = null;
+    let map;
+    let homeMarker;
+
+    const currentUserLabel = document.getElementById("currentUserLabel");
+    const studentIdInput = document.getElementById("studentIdInput");
+    const loginBtn = document.getElementById("loginBtn");
+
+    function getUserKeyPostfix() {
+      return "_" + (currentUserId || "guest");
+    }
+
+    function loadCurrentUserFromStorage() {
+      const stored = localStorage.getItem("brmn_currentUserId");
+      if (stored) {
+        currentUserId = stored;
+      }
+      currentUserLabel.textContent = currentUserId;
+      studentIdInput.value = currentUserId === "guest" ? "" : currentUserId;
+    }
+
+    function switchUser(userId) {
+      currentUserId = userId || "guest";
+      localStorage.setItem("brmn_currentUserId", currentUserId);
+      currentUserLabel.textContent = currentUserId;
+      loadHomeLocation();
+      updateStatsView();
+      updateBadges();
+    }
+
+    loginBtn.addEventListener("click", () => {
+      const val = studentIdInput.value.trim();
+      switchUser(val);
+      alert("สลับผู้ใช้เป็น: " + currentUserId);
+    });
+
+    loadCurrentUserFromStorage();
+
+    // ------------------------
+    // Google Map: initMap (ถูกเรียกจาก callback ใน script)
+    // ------------------------
+    function initMap() {
+      const mapEl = document.getElementById("map");
+      // เริ่มต้นให้กล้องอยู่แถวโรงเรียน
+      map = new google.maps.Map(mapEl, {
+        center: { lat: SCHOOL_LAT, lng: SCHOOL_LNG },
+        zoom: 13,
+      });
+
+      homeMarker = new google.maps.Marker({
+        position: { lat: SCHOOL_LAT, lng: SCHOOL_LNG },
+        map,
+        draggable: true,
+        icon: {
+          url:
+            "https://maps.google.com/mapfiles/ms/icons/pink-dot.png",
+        },
+        title: "ลากเพื่อกำหนดบ้านของฉัน",
+      });
+
+      // โหลดพิกัดบ้านจาก localStorage ถ้ามี
+      loadHomeLocation(true);
+
+      homeMarker.addListener("dragend", () => {
+        const pos = homeMarker.getPosition();
+        homeLat = pos.lat();
+        homeLng = pos.lng();
+        saveHomeLocation();
+      });
+
+      // ปุ่มใช้ตำแหน่งปัจจุบัน
+      document
+        .getElementById("useCurrentLocationBtn")
+        .addEventListener("click", () => {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (pos) => {
+                homeLat = pos.coords.latitude;
+                homeLng = pos.coords.longitude;
+                saveHomeLocation();
+                if (map && homeMarker) {
+                  const latLng = { lat: homeLat, lng: homeLng };
+                  homeMarker.setPosition(latLng);
+                  map.setCenter(latLng);
+                  map.setZoom(14);
+                }
+              },
+              () => {
+                alert(
+                  "ไม่สามารถใช้ตำแหน่งปัจจุบันได้ กรุณาอนุญาตการเข้าถึง Location หรือปักหมุดเองบนแผนที่"
+                );
+              }
+            );
+          } else {
+            alert("เบราว์เซอร์นี้ไม่รองรับการระบุตำแหน่งปัจจุบัน");
+          }
+        });
+    }
+
+    window.initMap = initMap; // ให้ callback ใช้งานได้
+
+    function loadHomeLocation(initialFromMap = false) {
+      const key = "brmn_home" + getUserKeyPostfix();
+      const raw = localStorage.getItem(key);
+      if (!raw) return;
+      try {
+        const obj = JSON.parse(raw);
+        if (typeof obj.lat === "number" && typeof obj.lng === "number") {
+          homeLat = obj.lat;
+          homeLng = obj.lng;
+          if (map && homeMarker && initialFromMap) {
+            const latLng = { lat: homeLat, lng: homeLng };
+            homeMarker.setPosition(latLng);
+            map.setCenter(latLng);
+            map.setZoom(14);
+          }
+        }
+      } catch (e) {}
+    }
+
+    function saveHomeLocation() {
+      const key = "brmn_home" + getUserKeyPostfix();
+      if (homeLat != null && homeLng != null) {
+        localStorage.setItem(
+          key,
+          JSON.stringify({ lat: homeLat, lng: homeLng })
+        );
+      }
+    }
+
+    // ------------------------
+    // Weather API (OpenWeather) — ใช้พิกัดบ้าน ถ้าไม่มีใช้พิกัดโรงเรียน
+    // ------------------------
+    async function fetchWeatherAndFactors() {
+      const weatherStatusEl = document.getElementById("weatherStatusBox");
+
+      const lat = homeLat != null ? homeLat : SCHOOL_LAT;
+      const lng = homeLng != null ? homeLng : SCHOOL_LNG;
+
+      if (!OPENWEATHER_API_KEY || OPENWEATHER_API_KEY === "YOUR_OPENWEATHER_API_KEY") {
+        weatherStatusEl.textContent =
+          "สภาพอากาศ: — (ยังไม่ได้ตั้งค่า OPENWEATHER_API_KEY)";
+        return { trafficFactor: 0.1, weatherFactor: 0 }; // ค่า default เบาๆ
+      }
+
+      try {
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${OPENWEATHER_API_KEY}&units=metric&lang=th`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const main = data.weather && data.weather[0] ? data.weather[0].main : "";
+        const desc =
+          data.weather && data.weather[0] ? data.weather[0].description : "";
+        const hasRain = main.toLowerCase().includes("rain");
+
+        let weatherFactor = 0;
+        if (hasRain) {
+          weatherFactor = 0.2;
+        } else if (main.toLowerCase().includes("cloud")) {
+          weatherFactor = 0.05;
+        }
+
+        // สำหรับตัวอย่างนี้ trafficFactor ให้เป็นค่ากลาง ๆ ก่อน
+        let trafficFactor = 0.15;
+
+        weatherStatusEl.textContent = `สภาพอากาศ: ${main} (${desc}) | factor อากาศ: ${weatherFactor.toFixed(
+          2
+        )} / factor รถติด (ตัวอย่าง): ${trafficFactor.toFixed(2)}`;
+
+        return { trafficFactor, weatherFactor };
+      } catch (e) {
+        weatherStatusEl.textContent =
+          "สภาพอากาศ: ดึงข้อมูลไม่ได้ (อาจมีปัญหา network หรือ API Key)";
+        return { trafficFactor: 0.1, weatherFactor: 0 };
+      }
+    }
+
+    // ------------------------
+    // Tab switching
+    // ------------------------
     const tabBar = document.getElementById("tabBar");
     const views = document.querySelectorAll(".view");
     tabBar.addEventListener("click", (e) => {
@@ -726,10 +1057,24 @@
         if (v.id === targetId) v.classList.add("active");
         else v.classList.remove("active");
       });
+      if (targetId === "statsView") {
+        updateStatsView();
+      } else if (targetId === "badgesView") {
+        updateBadges();
+      }
     });
 
-    // ----- Calculation logic -----
+    // ------------------------
+    // ตั้งค่าวันที่
+    // ------------------------
+    document.getElementById("todayDate").textContent = formatThaiDate();
+
+    // ------------------------
+    // การคำนวณหลัก
+    // ------------------------
     const calcBtn = document.getElementById("calcBtn");
+    const modeConditionSelect = document.getElementById("modeCondition");
+    const manualConditionRow = document.getElementById("manualConditionRow");
     const recommendedLeaveEl = document.getElementById("recommendedLeave");
     const etaChip = document.getElementById("etaChip");
     const riskChip = document.getElementById("riskChip");
@@ -738,29 +1083,63 @@
     const messageBox = document.getElementById("messageBox");
     const missionBox = document.getElementById("missionBox");
 
-    let lastCalcResult = null; // เก็บผลล่าสุดสำหรับใช้ตอนกดบันทึก
+    modeConditionSelect.addEventListener("change", () => {
+      if (modeConditionSelect.value === "manual") {
+        manualConditionRow.style.display = "grid";
+      } else {
+        manualConditionRow.style.display = "none";
+      }
+    });
 
-    calcBtn.addEventListener("click", () => {
+    manualConditionRow.style.display =
+      modeConditionSelect.value === "manual" ? "grid" : "none";
+
+    calcBtn.addEventListener("click", async () => {
       const arrivalTimeStr = document.getElementById("arrivalTime").value;
-      const baseTravel = Number(document.getElementById("baseTravel").value);
-      const trafficFactor = Number(
-        document.getElementById("trafficLevel").value
-      );
-      const weatherFactor = Number(document.getElementById("weather").value);
-      const buffer = Number(document.getElementById("buffer").value);
+      let baseTravel = Number(document.getElementById("baseTravel").value);
       const wakeTimeStr = document.getElementById("wakeTime").value;
       const prepMinutes = Number(
         document.getElementById("prepMinutes").value
       );
+      const buffer = Number(document.getElementById("buffer").value) || 0;
 
-      if (!arrivalTimeStr || !wakeTimeStr || !baseTravel || !prepMinutes) {
+      if (!arrivalTimeStr || !wakeTimeStr || !prepMinutes) {
         messageBox.innerHTML =
-          "⚠️ กรุณาใส่ข้อมูลให้ครบก่อนนะคะ (เวลาไปโรงเรียน, เวลาเดินทาง, เวลาตื่น, เวลาเตรียมตัว)";
+          "⚠️ กรุณาใส่ข้อมูลให้ครบก่อนนะคะ (เวลาไปโรงเรียน, เวลาตื่น, เวลาเตรียมตัว)";
         return;
       }
 
       const arrivalTimeMin = timeToMinutes(arrivalTimeStr);
       const wakeTimeMin = timeToMinutes(wakeTimeStr);
+
+      // ถ้ามีพิกัดบ้าน → คำนวณระยะทางโดยประมาณ
+      let distanceKm = 5; // default สมมติ 5 กม.
+      if (homeLat != null && homeLng != null) {
+        distanceKm = haversineDistance(homeLat, homeLng, SCHOOL_LAT, SCHOOL_LNG);
+      }
+
+      // ถ้า baseTravel ไม่ได้กรอก ให้ประมาณจากระยะทาง (สมมติความเร็วเฉลี่ย 20 กม./ชม.)
+      if (!baseTravel || baseTravel <= 0) {
+        baseTravel = (distanceKm / 20) * 60; // นาที
+      }
+
+      let trafficFactor = 0;
+      let weatherFactor = 0;
+
+      if (modeConditionSelect.value === "auto") {
+        // ใช้ข้อมูลจริงจาก API (ตัวอย่างสำหรับอากาศ + factor รถติดประมาณการ)
+        const factors = await fetchWeatherAndFactors();
+        trafficFactor = factors.trafficFactor;
+        weatherFactor = factors.weatherFactor;
+      } else {
+        // manual
+        trafficFactor = Number(
+          document.getElementById("trafficLevel").value
+        );
+        weatherFactor = Number(
+          document.getElementById("weather").value
+        );
+      }
 
       const travelWithFactors =
         baseTravel * (1 + trafficFactor + weatherFactor) + buffer;
@@ -770,7 +1149,6 @@
 
       recommendedLeaveEl.textContent = minutesToTime(recommendedLeaveMin);
 
-      // ประเมินเวลาไปถึงถ้าออกตามเวลาที่เตรียมตัวเสร็จ
       const etaIfLeaveNow = actualLeaveMin + travelWithFactors;
       const etaTimeStr = minutesToTime(etaIfLeaveNow);
       const lateMinutes = etaIfLeaveNow - arrivalTimeMin;
@@ -795,7 +1173,7 @@
         riskChip.textContent = "ถ้ายังออกเวลานี้ มีโอกาสมาสายเยอะเลยค่ะ ❗";
       }
 
-      // คะแนนวินัยวันนี้
+      // คำนวณคะแนนวินัย
       let score = 50;
       if (actualLeaveMin <= recommendedLeaveMin + 5) {
         score += 20;
@@ -823,9 +1201,12 @@
         msg +=
           "⚠️ แผนวันนี้ยังเสี่ยงมาสายนิดหน่อย ลองขยับเวลาออกจากบ้านให้เร็วขึ้นอีกสัก 10–15 นาทีดูนะคะ<br/>";
       }
-      msg += `• ใช้เวลาเดินทางโดยประมาณ <strong>${Math.round(
+      msg += `• ระยะทางโดยประมาณ: <strong>${distanceKm.toFixed(
+        1
+      )} กม.</strong><br/>`;
+      msg += `• ใช้เวลาเดินทางประมาณ <strong>${Math.round(
         travelWithFactors
-      )}</strong> นาที รวมเผื่อรถติด/ฝนแล้ว<br/>`;
+      )}</strong> นาที (รวมปัจจัยรถติด/อากาศ/เผื่อเวลาแล้ว)<br/>`;
       msg += `• ถ้าตื่นเวลา <strong>${wakeTimeStr}</strong> และใช้เวลาเตรียมตัว <strong>${prepMinutes} นาที</strong> ควรออกจากบ้านไม่เกิน <strong>${minutesToTime(
         recommendedLeaveMin
       )}</strong>`;
@@ -844,8 +1225,8 @@
       }
       missionBox.innerHTML = "🎮 <strong>ภารกิจวันนี้:</strong> " + mission;
 
-      // เก็บผลล่าสุดไว้ใช้ตอนบันทึก
       lastCalcResult = {
+        userId: currentUserId,
         dateKey: todayKey(),
         dateLabel: formatThaiDate(),
         arrivalTime: arrivalTimeStr,
@@ -853,15 +1234,20 @@
         etaIfLeaveNow: etaTimeStr,
         lateMinutes: lateMinutes,
         score: Math.round(score),
+        distanceKm: Number(distanceKm.toFixed(2)),
+        modeCondition: modeConditionSelect.value,
       };
     });
 
-    // ----- บันทึกข้อมูลวันนี้ -----
+    // ------------------------
+    // บันทึก / โหลด records ต่อ user
+    // ------------------------
     const saveBtn = document.getElementById("saveDayBtn");
 
     function loadRecords() {
+      const key = "brmn_records" + getUserKeyPostfix();
       try {
-        const raw = localStorage.getItem("brmn_records");
+        const raw = localStorage.getItem(key);
         if (!raw) return [];
         const arr = JSON.parse(raw);
         return Array.isArray(arr) ? arr : [];
@@ -871,7 +1257,8 @@
     }
 
     function saveRecords(records) {
-      localStorage.setItem("brmn_records", JSON.stringify(records));
+      const key = "brmn_records" + getUserKeyPostfix();
+      localStorage.setItem(key, JSON.stringify(records));
     }
 
     function updateStatsView() {
@@ -886,13 +1273,12 @@
 
       if (count === 0) {
         listEl.innerHTML =
-          '<div class="history-item"><div>ยังไม่มีข้อมูล กรุณาลองคำนวณและกด "บันทึกข้อมูลวันนี้" ก่อนค่ะ</div></div>';
+          '<div class="history-item"><div>ยังไม่มีข้อมูลของผู้ใช้คนนี้ กรุณาลองคำนวณและกด "บันทึกข้อมูลวันนี้" ก่อนค่ะ</div></div>';
         statAvgScoreEl.textContent = "0";
         statOnTimeRateEl.textContent = "0%";
         return;
       }
 
-      // จำกัดแสดงล่าสุด 30 รายการ
       const showRecords = records.slice(-30).reverse();
 
       let html = "";
@@ -908,6 +1294,7 @@
               <div style="font-size:11px;">
                 แนะนำให้ออก: <strong>${rec.recommendedLeave}</strong>
                 | คาดว่าจะถึง: ${rec.etaIfLeaveNow}
+                | ระยะทาง ~ ${rec.distanceKm || "-"} กม.
               </div>
             </div>
             <div class="history-meta">
@@ -946,16 +1333,17 @@
       } else {
         records.push(lastCalcResult);
       }
-      // จำกัดไม่เกิน 90 วันล่าสุด
-      if (records.length > 90) {
-        records.splice(0, records.length - 90);
+      if (records.length > 180) {
+        records.splice(0, records.length - 180);
       }
       saveRecords(records);
       updateStatsView();
       alert("บันทึกข้อมูลของวันนี้เรียบร้อยแล้ว 🎉");
     });
 
-    // ----- Badges -----
+    // ------------------------
+    // Badges ต่อ user
+    // ------------------------
     const refreshBadgesBtn = document.getElementById("refreshBadgesBtn");
     const badgeList = document.getElementById("badgeList");
 
@@ -966,21 +1354,16 @@
         perfectWeek: false,
         improve: false,
       };
-      if (records.length === 0) {
-        // ไม่มีข้อมูล
-      } else {
-        // เงื่อนไข Early Bird: ไม่มาสาย อย่างน้อย 3 วัน
+
+      if (records.length > 0) {
         const onTimeDays = records.filter((r) => r.lateMinutes <= 0).length;
         if (onTimeDays >= 3) badges.early = true;
 
-        // เงื่อนไข Zero Late Week: ล่าสุด 5 วัน ไม่มีสายเลย
         if (records.length >= 5) {
           const last5 = records.slice(-5);
           if (last5.every((r) => r.lateMinutes <= 0)) badges.perfectWeek = true;
         }
 
-        // เงื่อนไข Improvement Hero:
-        // เฉลี่ยครึ่งหลัง มากกว่าครึ่งแรก >= 15 คะแนน
         if (records.length >= 6) {
           const mid = Math.floor(records.length / 2);
           const first = records.slice(0, mid);
@@ -1020,7 +1403,7 @@
       alert("อัปเดตสถานะแบดจ์เรียบร้อยแล้ว ✨");
     });
 
-    // โหลดสถิติ + แบดจ์ครั้งแรก
+    // โหลดครั้งแรก
     updateStatsView();
     updateBadges();
   </script>
